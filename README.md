@@ -3,7 +3,7 @@
 ## Requirement
 * **nodejs >= v14.7.0**
 * **npm >= v6.4.7**
-* **NodeJS >= v1.19.1**
+* **yarn >= v1.19.1**
 
 Clone project and run test.
 
