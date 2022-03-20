@@ -1,0 +1,15 @@
+@import '_setting.scss';
+
+body {
+    margin: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.3em;
+}
+
+.meowlo-master {
+    height: 100vh; // chiều cao full màn hình (bất kể màn hình nào)
+    display: grid; // grid layout theo row
+    grid-template-rows: 40px 50px 1fr; // hiện tại có 3 row, row trên cùng 40px, thứ 2 50px, row cuối cùng (phần còn lại) 1fr khung hình
+    background-color: $board-bg-color; // sử dụng biến $board-bg-color được khai báo ở trên
+}

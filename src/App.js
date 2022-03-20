@@ -1,9 +1,17 @@
-import './App.css';
+import React from "react"
+import './App.scss'
+
+// custom components
+import AppBar from "components/AppBar/AppBar"
+import BoardBar from "components/BoardBar/BoardBar"
+import BoardContent from "components/BoardContent/BoardContent"
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hí anh em</h1>
+    <div className="meowlo-master">
+      <AppBar />
+      <BoardBar />
+      <BoardContent />
     </div>
   );
 }
