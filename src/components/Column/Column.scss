@@ -15,7 +15,7 @@ $list-bg-color: #d9edf5;
         margin-left: $gap;
     }
 
-    > * { // chung cho 3 thẻ là header, ul và footer
+    > * { // common to 3 tags are header, ul and footer
         background-color: $list-bg-color;
         color: #333;
         padding: 0 8px;
@@ -39,7 +39,7 @@ $list-bg-color: #d9edf5;
         border-bottom-right-radius: $column-border-radius;
     }
 
-    ul.task-list {
+    ul.card-list {
         list-style-type: none;
         margin: 0;
         max-height: calc(100% - #{$column-border-radius} - #{$column-header-height});

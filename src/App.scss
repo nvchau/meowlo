@@ -8,8 +8,8 @@ body {
 }
 
 .meowlo-master {
-    height: 100vh; // chiều cao full màn hình (bất kể màn hình nào)
-    display: grid; // grid layout theo row
-    grid-template-rows: 40px 50px 1fr; // hiện tại có 3 row, row trên cùng 40px, thứ 2 50px, row cuối cùng (phần còn lại) 1fr khung hình
-    background-color: $board-bg-color; // sử dụng biến $board-bg-color được khai báo ở trên
+    height: 100vh; // full screen height (regardless of screen)
+    display: grid; // grid layout by row
+    grid-template-rows: 40px 50px 1fr; // currently have 3 rows, top row 40px, 2nd row 50px, last row (rest) 1fr frames
+    background-color: $board-bg-color; // use the variable $board-bg-color declared above
 }

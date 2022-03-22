@@ -3,7 +3,7 @@
 .board-content {
     display: flex;
     margin: 0 $gap $gap;
-    overflow-x: auto; // tạo thanh scroll ngang cho phần tử
+    overflow-x: auto; // create horizontal scroll bar for element
     &::-webkit-scrollbar {
         -webkit-appearance: none;
     }
