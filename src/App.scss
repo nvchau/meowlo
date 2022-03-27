@@ -1,15 +1,14 @@
-@import '_setting.scss';
+@import "_setting.scss";
 
 body {
-    margin: 0;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 14px;
-    line-height: 1.3em;
+  margin: 0;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  line-height: 1.3em;
 }
 
 .meowlo-master {
-    height: 100vh; // full screen height (regardless of screen)
-    display: grid; // grid layout by row
-    grid-template-rows: 40px 50px 1fr; // currently have 3 rows, top row 40px, 2nd row 50px, last row (rest) 1fr frames
-    background-color: $board-bg-color; // use the variable $board-bg-color declared above
+  height: 100vh; // full screen height (regardless of screen)
+  overflow: hidden; // hide scrollbar
+  background-color: $board-bg-color; // use the variable $board-bg-color declared above
 }
