@@ -2,14 +2,20 @@ import React from 'react'
 import './Card.scss'
 
 function Task(props) {
-    const { card } = props
+  const { card } = props
 
-    return (
-        <li className="card-item">
-            {card.cover && <img src={card.cover} className="card-cover" alt="card-cover" />}
-            {card.title}
-        </li>
-    )
+  return (
+    <div className="card-item">
+      {card.cover &&
+        <img
+          src={card.cover}
+          className="card-cover" alt="card-cover"
+          onMouseDown={e => e.preventDefault()}
+        />
+      }
+      {card.title}
+    </div>
+  )
 }
 
 export default Task

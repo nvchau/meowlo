@@ -1,17 +1,22 @@
-@import '_setting.scss';
+@import "_setting.scss";
 
 .board-content {
-    display: flex;
-    margin: 0 $gap $gap;
-    overflow-x: auto; // create horizontal scroll bar for element
-    &::-webkit-scrollbar {
-        -webkit-appearance: none;
-    }
-    &::-webkit-scrollbar:vertical {
-        height: 11px;
-    }
-    &::-webkit-scrollbar-thumb:horizontal {
-        background-color: $common-element-bg;
-        border-radius: 8px;
-    }
+  height: $board-content-height;
+  overflow-x: auto; // create horizontal scroll bar for element
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+  &::-webkit-scrollbar:vertical {
+    height: 11px;
+  }
+  &::-webkit-scrollbar-thumb:horizontal {
+    background-color: $common-element-bg;
+    border-radius: 8px;
+  }
+  .column-drop-preview {
+    background-color: rgba(188, 188, 255, 0.1);
+    border: 1px dashed rgb(255, 255, 255);
+    margin: 5px 45px 5px 5px;
+  }
 }
