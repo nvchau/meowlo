@@ -6,12 +6,8 @@ import Card from 'components/Card/Card'
 import { mapOrder } from 'utilities/sorts'
 
 function Column(props) {
-  const { column } = props
+  const { column, onCardDrop } = props
   const cards = mapOrder({ array: column.cards, order: column.cardOrder, key: 'id' })
-
-  const onCardDrop = (dropResult) => {
-    console.log(dropResult)
-  }
 
   return (
     <div className="column">
@@ -20,7 +16,7 @@ function Column(props) {
         <Container
           orientation="vertical" // default
           groupName="meowlo-columns"
-          onDrop={onCardDrop}
+          onDrop={dropResult => onCardDrop({ columnId: column.id, dropResult })}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
@@ -38,7 +34,11 @@ function Column(props) {
           ))}
         </Container>
       </div>
-      <footer>Add another card</footer>
+      <footer>
+        <div className="footer-actions">
+          <i className="fa fa-plus icon"></i> Add another card
+        </div>
+      </footer>
     </div>
   )
 }

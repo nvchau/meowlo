@@ -6,6 +6,7 @@ import './BoardContent.scss'
 
 import Column from 'components/Column/Column'
 import { mapOrder } from 'utilities/sorts'
+import { applyDrag } from 'utilities/dragDrop'
 
 import { initialData } from 'actions/initialData'
 
@@ -40,7 +41,34 @@ function BoardContent() {
   }
 
   const onColumnDrop = (dropResult) => {
-    console.log(dropResult)
+    // colone columns
+    let newColumns = [...columns]
+    // update columns with applyDrag function of react-smooth-dnd library
+    newColumns = applyDrag(newColumns, dropResult)
+
+    // colone board
+    let newBoard = { ...board }
+    // update columnOrder of board
+    newBoard.columnOrder = newColumns.map(column => column.id)
+    // update columns of board
+    newBoard.columns = newColumns
+
+    setColumns(newColumns)
+    setBoard(newBoard)
+  }
+
+  const onCardDrop = ({ columnId, dropResult }) => {
+    // which column has removedIndex and addedIndex other than null (ie interactive) will run logic
+    if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+      let newColumns = [...columns]
+
+      let currentColumn = newColumns.find(column => column.id === columnId)
+      currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
+      currentColumn.cardOrder = currentColumn.cards.map(card => card.id)
+
+      setColumns(newColumns)
+      // console.log({newColumns})
+    }
   }
 
   return (
@@ -58,10 +86,13 @@ function BoardContent() {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} />
+            <Column column={column} onCardDrop={onCardDrop} />
           </Draggable>
         ))}
       </Container>
+      <div className="add-new-column">
+        <i className="fa fa-plus icon"></i> Add another column
+      </div>
     </div>
   )
 }

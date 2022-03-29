@@ -10,7 +10,7 @@ function Task(props) {
         <img
           src={card.cover}
           className="card-cover" alt="card-cover"
-          onMouseDown={e => e.preventDefault()}
+          draggable="false"
         />
       }
       {card.title}
