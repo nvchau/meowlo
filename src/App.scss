@@ -11,4 +11,10 @@ body {
   height: 100vh; // full screen height (regardless of screen)
   overflow: hidden; // hide scrollbar
   background-color: $board-bg-color; // use the variable $board-bg-color declared above
+  color: $app-main-text-color;
+  // font awesome icon
+  .icon {
+    font-size: 14px;
+    margin-right: 3px;
+  }
 }
