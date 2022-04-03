@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
+import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
 import { isEmpty } from 'lodash'
 
 import './BoardContent.scss'
@@ -90,10 +91,20 @@ function BoardContent() {
           </Draggable>
         ))}
       </Container>
+
+      <BootstrapContainer>
+        <Row>
+          <Col>
+            oke
+          </Col>
+        </Row>
+      </BootstrapContainer>
       <div className="add-new-column">
         <i className="fa fa-plus icon"></i> Add another column
       </div>
     </div>
+    // https://www.youtube.com/watch?v=Ni_mYcPEwXI&list=PLP6tw4Zpj-RKdGMqhYpfdl94cd4fu-RFg&index=9
+    // 08:09
   )
 }
 
