@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { Container as BootstrapContainer, Row, Col } from 'react-bootstrap'
+import {
+  Container as BootstrapContainer,
+  Row,
+  Col,
+  Form,
+  Button
+} from 'react-bootstrap'
 import { isEmpty } from 'lodash'
 
 import './BoardContent.scss'
@@ -14,6 +20,13 @@ import { initialData } from 'actions/initialData'
 function BoardContent() {
   const [board, setBoard] = useState({})
   const [columns, setColumns] = useState({})
+  const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
+
+  // use ref for input focus
+  const newColumnInputRef = useRef(null)
+
+  const [newColumnTitle, setNewColumnTitle] = useState('')
+  const onNewColumnTitleChange = useCallback((e) => setNewColumnTitle(e.target.value), [])
 
   useEffect(() => {
     const boardFromDB = initialData.boards.find(
@@ -33,6 +46,13 @@ function BoardContent() {
     }
   }, [])
 
+  useEffect(() => {
+    if (newColumnInputRef && newColumnInputRef.current) {
+      newColumnInputRef.current.focus()
+      newColumnInputRef.current.select()
+    }
+  }, [openNewColumnForm]) // if openNewColumnForm change -> focus the input
+
   if (isEmpty(board)) {
     return (
       <div className="not-found" style={{ padding: '10px', color: 'white' }}>
@@ -50,7 +70,7 @@ function BoardContent() {
     // colone board
     let newBoard = { ...board }
     // update columnOrder of board
-    newBoard.columnOrder = newColumns.map(column => column.id)
+    newBoard.columnOrder = newColumns.map((column) => column.id)
     // update columns of board
     newBoard.columns = newColumns
 
@@ -63,22 +83,52 @@ function BoardContent() {
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       let newColumns = [...columns]
 
-      let currentColumn = newColumns.find(column => column.id === columnId)
+      let currentColumn = newColumns.find((column) => column.id === columnId)
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
-      currentColumn.cardOrder = currentColumn.cards.map(card => card.id)
+      currentColumn.cardOrder = currentColumn.cards.map((card) => card.id)
 
       setColumns(newColumns)
       // console.log({newColumns})
     }
   }
 
+  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
+
+  const addNewColumn = () => {
+    if (!newColumnTitle) {
+      newColumnInputRef.current.focus() // if newColumnTitle null -> focus the input
+      return
+    }
+
+    const newColumnToAdd = {
+      id: Math.random().toString(36).substring(2, 5), // 5 random characters, will remove when impalement API
+      boardId: board.id,
+      title: newColumnTitle.trim(), // trim to remove leading and trailing spaces
+      cardOrder: [],
+      cards: []
+    }
+
+    let newColumns = [...columns]
+    newColumns.push(newColumnToAdd)
+
+    let newBoard = { ...board }
+    newBoard.columnOrder = newColumns.map((column) => column.id)
+    newBoard.columns = newColumns
+
+    setColumns(newColumns)
+    setBoard(newBoard)
+
+    setNewColumnTitle('')
+    toggleOpenNewColumnForm()
+  }
+
   return (
     <div className="board-content">
       <Container
-        orientation="horizontal"
+        orientation='horizontal'
         onDrop={onColumnDrop}
-        getChildPayload={index => columns[index]}
-        dragHandleSelector=".column-drag-handle" // can only drag header tag with className="column-drag-handle" (on the side of Column.js component)
+        getChildPayload={(index) => columns[index]}
+        dragHandleSelector='.column-drag-handle' // can only drag header tag with className="column-drag-handle' (on the side of Column.js component)
         dropPlaceholder={{
           animationDuration: 150,
           showOnTop: true,
@@ -92,19 +142,35 @@ function BoardContent() {
         ))}
       </Container>
 
-      <BootstrapContainer>
-        <Row>
-          <Col>
-            oke
-          </Col>
-        </Row>
+      <BootstrapContainer className="meowlo-container">
+        {!openNewColumnForm &&
+          <Row>
+            <Col className="add-new-column" onClick={toggleOpenNewColumnForm}>
+              <i className="fa fa-plus icon"></i> Add another column
+            </Col>
+          </Row>
+        }
+
+        {openNewColumnForm &&
+          <Row>
+            <Col className="enter-new-column">
+              <Form.Control
+                className="input-enter-new-column"
+                side='sm'
+                type='text'
+                placeholder='Enter column title...'
+                ref={newColumnInputRef}
+                value={newColumnTitle}
+                onChange={onNewColumnTitleChange}
+                onKeyDown={(e) => (e.key === 'Enter') && addNewColumn()}
+              />
+              <Button variant="success" size="sm" onClick={addNewColumn}>Add column</Button>
+              <span className="cancel-new-column" onClick={toggleOpenNewColumnForm}><i className="fa fa-trash icon"></i></span>
+            </Col>
+          </Row>
+        }
       </BootstrapContainer>
-      <div className="add-new-column">
-        <i className="fa fa-plus icon"></i> Add another column
-      </div>
     </div>
-    // https://www.youtube.com/watch?v=Ni_mYcPEwXI&list=PLP6tw4Zpj-RKdGMqhYpfdl94cd4fu-RFg&index=9
-    // 08:09
   )
 }
 

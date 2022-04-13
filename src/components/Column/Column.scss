@@ -3,8 +3,6 @@
 $column-header-height: 36px;
 $column-footer-height: 36px;
 
-$list-bg-color: #d9edf5;
-
 // column height = boardContent height - 50px
 $column-height: calc(#{$board-content-height} - #{$gap * 5 + 5px});
 
@@ -16,7 +14,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 5 + 5px});
 
   > * {
     // common to 3 tags are header, div and footer
-    background-color: $list-bg-color;
+    background-color: $column-bg-color;
     padding: 0 8px;
   }
 
@@ -40,7 +38,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 5 + 5px});
     color: #888;
 
     .footer-actions {
-      margin-left: $gap;
+      // margin-left: 5px;
       cursor: pointer;
       transition: $hover-transition;
       &:hover {
@@ -63,8 +61,8 @@ $column-height: calc(#{$board-content-height} - #{$gap * 5 + 5px});
       width: 11px;
     }
     &::-webkit-scrollbar-thumb:vertical {
-      background-color: darken($color: $list-bg-color, $amount: 15);
-      border-right: 5px solid $list-bg-color;
+      background-color: darken($color: $column-bg-color, $amount: 15);
+      border-right: 5px solid $column-bg-color;
     }
     
     .card-ghost {

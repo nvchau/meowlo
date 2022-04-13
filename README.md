@@ -31,3 +31,4 @@ $ yarn | npm start
 ## UI
 * `react-bootstrap` npm | import Sass to src/App.scss
 * `bootstrap` npm
+* can find colors library: flatuicolors
