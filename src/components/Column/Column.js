@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
+import { Dropdown } from 'react-bootstrap'
 
 import './Column.scss'
 import Card from 'components/Card/Card'
@@ -11,7 +12,23 @@ function Column(props) {
 
   return (
     <div className="column">
-      <header className="column-drag-handle">{column.title}</header>
+      <header className="column-drag-handle">
+        <div className="column-title">
+          {column.title}
+        </div>
+        <div className="column-dropdown-actions">
+          <Dropdown>
+            <Dropdown.Toggle id="dropdown-basic" size="sm" className="dropdown-btn" />
+
+            <Dropdown.Menu>
+              <Dropdown.Item>Add card</Dropdown.Item>
+              <Dropdown.Item>Remove column</Dropdown.Item>
+              <Dropdown.Item>Move all cards in this column (bate)...</Dropdown.Item>
+              <Dropdown.Item>Archive all cards in this column (bate)...</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      </header>
       <div className="card-list">
         <Container
           orientation="vertical" // default
