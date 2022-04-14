@@ -22,7 +22,7 @@ $ yarn | npm start
 * eslint-plugin-react-hooks
 #### Run
 * Run: npm run eslint
-## Grap and Drop function
+## Drag and Drop function
 #### Libraries
 * Use `react-smooth-dnd` (the documentation of this library is quite limited and not as clear as the one below) (code demo: https://github.com/kutlugsahin/smooth-dnd-demo/blob/master/src/demo/pages/cards.js)
 * Or `react-beautiful-dnd` (but it still has issue 131 from 2017 until now, still unresolved)
@@ -31,4 +31,6 @@ $ yarn | npm start
 ## UI
 * `react-bootstrap` npm | import Sass to src/App.scss
 * `bootstrap` npm
-* can find colors library: flatuicolors
+* Can find colors library: `flatuicolors`
+* Parse HTML: `html-react-parser
+* Can try open and close input editer (inline edit): `react-contenteditable`. but in this project I don't use, I use CSS only
