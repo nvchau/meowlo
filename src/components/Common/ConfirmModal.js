@@ -1,5 +1,10 @@
 import React from 'react'
-import { Modal } from 'react-bootstrap'
+import { Modal, Button } from 'react-bootstrap'
+import HTMLReactParser from 'html-react-parser'
+
+import { MODAL_ACTION_CLOSE, MODAL_ACTION_CONFIRM } from 'utilities/constants'
+
+import './ConfirmModal.scss'
 
 function ConfirmModal(props) {
   const { title, content, show, onAction } = props
@@ -7,22 +12,22 @@ function ConfirmModal(props) {
   return (
     <Modal 
       show={show}
-      onHide={() => onAction}
+      onHide={() => onAction(MODAL_ACTION_CLOSE)}
+      backdrop={'static'}
+      keyboard={false}
     >
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title className="h5">{HTMLReactParser(title)}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{content}</Modal.Body>
+      <Modal.Body>{HTMLReactParser(content)}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button className="close-btn" variant="secondary" onClick={() => onAction(MODAL_ACTION_CLOSE)}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Delete
+        <Button className="confirm-btn" variant="primary" onClick={() => onAction(MODAL_ACTION_CONFIRM)}>
+          Confirm
         </Button>
       </Modal.Footer>
-      {/* https://www.youtube.com/watch?v=QV8PrXAi6os&list=PLP6tw4Zpj-RKdGMqhYpfdl94cd4fu-RFg&index=9
-      25:38 */}
     </Modal>
   )
 }
