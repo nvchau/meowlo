@@ -10,7 +10,7 @@ function ConfirmModal(props) {
   const { title, content, show, onAction } = props
 
   return (
-    <Modal 
+    <Modal
       show={show}
       onHide={() => onAction(MODAL_ACTION_CLOSE)}
       backdrop={'static'}
