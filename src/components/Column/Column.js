@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { Dropdown, Form } from 'react-bootstrap'
+import { Dropdown, Form, Button } from 'react-bootstrap'
 
 import './Column.scss'
 import Card from 'components/Card/Card'
@@ -17,12 +17,23 @@ function Column(props) {
   const toggleShowConfirmModal = () => setShowConfirmModal(!showConfirmModal)
 
   const [columnTitle, setColumnTitle] = useState('')
+  const handleColumnTitleChange = (e) => setColumnTitle(e.target.value)
 
-  const handleColumnTitleChange = useCallback((e) => setColumnTitle(e.target.value), [])
+  const [openNewCardForm, setOpenNewCardForm] = useState(false)
+  const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
+
+  const newCardTextAreaRef = useRef(null)
 
   useEffect(() => {
     setColumnTitle(column.title)
   }, [column.title])
+
+  useEffect(() => {
+    if (newCardTextAreaRef && newCardTextAreaRef.current) {
+      newCardTextAreaRef.current.focus()
+      newCardTextAreaRef.current.select()
+    }
+  }, [openNewCardForm])
 
   const onConfirmModalAction = (type) => {
     if (type === MODAL_ACTION_CONFIRM) {
@@ -96,11 +107,34 @@ function Column(props) {
             </Draggable>
           ))}
         </Container>
+        {openNewCardForm &&
+          <div className="add-new-card-area">
+            <Form.Control
+              className="textarea-enter-new-column"
+              side="sm"
+              as="textarea"
+              rows="3"
+              placeholder='Enter a title for this card...'
+              ref={newCardTextAreaRef}
+              // value={newColumnTitle}
+              // onChange={onNewColumnTitleChange}
+              // onKeyDown={(e) => (e.key === 'Enter') && addNewColumn()}
+            />
+            <Button variant="success" size="sm">Add card</Button>
+            <span className="cancel-icon" onClick={toggleOpenNewCardForm}>
+              <i className="fa fa-trash icon"></i>
+            </span>
+          </div>
+        }
+        {/* https://www.youtube.com/watch?v=Lq1n9kTFn3c&list=PLP6tw4Zpj-RKdGMqhYpfdl94cd4fu-RFg&index=10
+        21:23 */}
       </div>
       <footer>
-        <div className="footer-actions">
-          <i className="fa fa-plus icon"></i> Add another card
-        </div>
+        {!openNewCardForm &&
+          <div className="footer-actions" onClick={toggleOpenNewCardForm}>
+            <i className="fa fa-plus icon"></i> Add another card
+          </div>
+        }
       </footer>
 
       <ConfirmModal

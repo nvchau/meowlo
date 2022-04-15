@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import {
   Container as BootstrapContainer,
@@ -20,13 +20,15 @@ import { initialData } from 'actions/initialData'
 function BoardContent() {
   const [board, setBoard] = useState({})
   const [columns, setColumns] = useState({})
+
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
+  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   // use ref for input focus
   const newColumnInputRef = useRef(null)
 
   const [newColumnTitle, setNewColumnTitle] = useState('')
-  const onNewColumnTitleChange = useCallback((e) => setNewColumnTitle(e.target.value), [])
+  const onNewColumnTitleChange = (e) => setNewColumnTitle(e.target.value)
 
   useEffect(() => {
     const boardFromDB = initialData.boards.find(
@@ -91,8 +93,6 @@ function BoardContent() {
       // console.log({newColumns})
     }
   }
-
-  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const addNewColumn = () => {
     if (!newColumnTitle) {
@@ -188,7 +188,9 @@ function BoardContent() {
                 onKeyDown={(e) => (e.key === 'Enter') && addNewColumn()}
               />
               <Button variant="success" size="sm" onClick={addNewColumn}>Add column</Button>
-              <span className="cancel-new-column" onClick={toggleOpenNewColumnForm}><i className="fa fa-trash icon"></i></span>
+              <span className="cancel-icon" onClick={toggleOpenNewColumnForm}>
+                <i className="fa fa-trash icon"></i>
+              </span>
             </Col>
           </Row>
         }
