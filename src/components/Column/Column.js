@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { Dropdown, Form, Button } from 'react-bootstrap'
+import { cloneDeep } from 'lodash'
 
 import './Column.scss'
 import Card from 'components/Card/Card'
@@ -23,6 +24,9 @@ function Column(props) {
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm)
 
   const newCardTextAreaRef = useRef(null)
+
+  const [newCardTitle, setNewCardTitle] = useState('')
+  const onNewCardTitleChange = (e) => setNewCardTitle(e.target.value)
 
   useEffect(() => {
     setColumnTitle(column.title)
@@ -54,6 +58,32 @@ function Column(props) {
     }
 
     onUpdateColumn(newColumn)
+  }
+
+  const addNewCard = () => {
+    if (!newCardTitle) {
+      newCardTextAreaRef.current.focus() // if newCardTitle null -> focus the input
+      return
+    }
+
+    const newCardToAdd = {
+      id: Math.random().toString(36).substring(2, 5), // 5 random characters
+      boardId: column.boardId,
+      columnId: column.id,
+      title: newCardTitle.trim(), // trim to remove leading and trailing spaces
+      cover: null
+    }
+
+    let newColumn = cloneDeep(column)
+    // let newColumn = JSON.stringify(column) // or use this one
+    // newColumn = JSON.parse(newColumn)
+    newColumn.cards.push(newCardToAdd)
+    newColumn.cardOrder.push(newCardToAdd.id)
+
+    //used in common with the function onUpdateColumn
+    onUpdateColumn({ newColumnToUpdate: newColumn })
+    setNewCardTitle('')
+    toggleOpenNewCardForm()
   }
 
   return (
@@ -116,18 +146,16 @@ function Column(props) {
               rows="3"
               placeholder='Enter a title for this card...'
               ref={newCardTextAreaRef}
-              // value={newColumnTitle}
-              // onChange={onNewColumnTitleChange}
-              // onKeyDown={(e) => (e.key === 'Enter') && addNewColumn()}
+              value={newCardTitle}
+              onChange={onNewCardTitleChange}
+              onKeyDown={(e) => (e.key === 'Enter') && addNewCard()}
             />
-            <Button variant="success" size="sm">Add card</Button>
+            <Button variant="success" size="sm" onClick={addNewCard}>Add card</Button>
             <span className="cancel-icon" onClick={toggleOpenNewCardForm}>
               <i className="fa fa-trash icon"></i>
             </span>
           </div>
         }
-        {/* https://www.youtube.com/watch?v=Lq1n9kTFn3c&list=PLP6tw4Zpj-RKdGMqhYpfdl94cd4fu-RFg&index=10
-        21:23 */}
       </div>
       <footer>
         {!openNewCardForm &&

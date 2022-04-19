@@ -122,7 +122,7 @@ function BoardContent() {
     toggleOpenNewColumnForm()
   }
 
-  const onUpdateColumn = (newColumnToUpdate) => {
+  const onUpdateColumn = ({ newColumnToUpdate }) => {
     const columnIdToUpdate = newColumnToUpdate.id
 
     let newColumns = [...columns]
@@ -133,7 +133,7 @@ function BoardContent() {
       // remove column
       newColumns.splice(columnIndexToUpdate, 1)
     } else {
-      // update column info
+      // update column info (ex: add new card)
       newColumns.splice(columnIndexToUpdate, 1, newColumnToUpdate)
     }
 
@@ -160,7 +160,11 @@ function BoardContent() {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn} />
+            <Column
+              column={column}
+              onCardDrop={onCardDrop}
+              onUpdateColumn={onUpdateColumn}
+            />
           </Draggable>
         ))}
       </Container>

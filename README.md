@@ -34,3 +34,5 @@ $ yarn | npm start
 * Can find colors library: `flatuicolors`
 * Parse HTML: `html-react-parser
 * Can try open and close input editer (inline edit): `react-contenteditable`. but in this project I don't use, I use CSS only
+## Some technical
+* Clone deep a array (object) with `lodash`: `_.cloneDeep` function (Another way to deep clone an object is to convert the value to a string then assign it to a new variable and parse it back to the object)
