@@ -12,7 +12,7 @@ import { selectAllInlineText, saveContentAfterPressEnter } from 'utilities/conte
 
 function Column(props) {
   const { column, onCardDrop, onUpdateColumn } = props
-  const cards = mapOrder({ array: column.cards, order: column.cardOrder, key: 'id' })
+  const cards = mapOrder({ array: column.cards, order: column.cardOrder, key: '_id' })
 
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const toggleShowConfirmModal = () => setShowConfirmModal(!showConfirmModal)
@@ -57,7 +57,7 @@ function Column(props) {
       title: columnTitle
     }
 
-    onUpdateColumn(newColumn)
+    onUpdateColumn({ newColumnToUpdate: newColumn })
   }
 
   const addNewCard = () => {
@@ -69,7 +69,7 @@ function Column(props) {
     const newCardToAdd = {
       id: Math.random().toString(36).substring(2, 5), // 5 random characters
       boardId: column.boardId,
-      columnId: column.id,
+      columnId: column._id,
       title: newCardTitle.trim(), // trim to remove leading and trailing spaces
       cover: null
     }
@@ -78,7 +78,7 @@ function Column(props) {
     // let newColumn = JSON.stringify(column) // or use this one
     // newColumn = JSON.parse(newColumn)
     newColumn.cards.push(newCardToAdd)
-    newColumn.cardOrder.push(newCardToAdd.id)
+    newColumn.cardOrder.push(newCardToAdd._id)
 
     //used in common with the function onUpdateColumn
     onUpdateColumn({ newColumnToUpdate: newColumn })
@@ -120,7 +120,7 @@ function Column(props) {
         <Container
           orientation="vertical" // default
           groupName="meowlo-columns"
-          onDrop={dropResult => onCardDrop({ columnId: column.id, dropResult })}
+          onDrop={dropResult => onCardDrop({ columnId: column._id, dropResult })}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
