@@ -9,9 +9,10 @@ import ConfirmModal from 'components/Common/ConfirmModal'
 import { mapOrder } from 'utilities/sorts'
 import { MODAL_ACTION_CONFIRM } from 'utilities/constants'
 import { selectAllInlineText, saveContentAfterPressEnter } from 'utilities/contentEditable'
+import { createNewCard, updateColumn } from 'actions/ApiCall'
 
 function Column(props) {
-  const { column, onCardDrop, onUpdateColumn } = props
+  const { column, onCardDrop, onUpdateColumnSate } = props
   const cards = mapOrder({ array: column.cards, order: column.cardOrder, key: '_id' })
 
   const [showConfirmModal, setShowConfirmModal] = useState(false)
@@ -39,6 +40,7 @@ function Column(props) {
     }
   }, [openNewCardForm])
 
+  // Remove column
   const onConfirmModalAction = (type) => {
     if (type === MODAL_ACTION_CONFIRM) {
       const newColumn = {
@@ -46,18 +48,29 @@ function Column(props) {
         _destroy: true
       }
 
-      onUpdateColumn(newColumn)
+      // Call API update column
+      updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+        onUpdateColumnSate({ newColumnToUpdate: updatedColumn })
+      })
     }
     toggleShowConfirmModal()
   }
 
+  // Update column title
   const handleColumnTitleBlur = () => {
-    const newColumn = {
-      ...column,
-      title: columnTitle
-    }
+    // If columnTitle changes => call API
+    if (columnTitle !== column.title) {
+      const newColumn = {
+        ...column,
+        title: columnTitle
+      }
 
-    onUpdateColumn({ newColumnToUpdate: newColumn })
+      // Call API update column
+      updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+        updatedColumn.cards = newColumn.cards
+        onUpdateColumnSate({ newColumnToUpdate: updatedColumn })
+      })
+    }
   }
 
   const addNewCard = () => {
@@ -67,23 +80,24 @@ function Column(props) {
     }
 
     const newCardToAdd = {
-      id: Math.random().toString(36).substring(2, 5), // 5 random characters
       boardId: column.boardId,
       columnId: column._id,
-      title: newCardTitle.trim(), // trim to remove leading and trailing spaces
-      cover: null
+      title: newCardTitle.trim() // trim to remove leading and trailing spaces
     }
 
-    let newColumn = cloneDeep(column)
-    // let newColumn = JSON.stringify(column) // or use this one
-    // newColumn = JSON.parse(newColumn)
-    newColumn.cards.push(newCardToAdd)
-    newColumn.cardOrder.push(newCardToAdd._id)
+    // Call API
+    createNewCard(newCardToAdd).then(createdCard => {
+      let newColumn = cloneDeep(column)
+      // let newColumn = JSON.stringify(column) // or use this one
+      // newColumn = JSON.parse(newColumn)
+      newColumn.cards.push(createdCard)
+      newColumn.cardOrder.push(createdCard._id)
 
-    //used in common with the function onUpdateColumn
-    onUpdateColumn({ newColumnToUpdate: newColumn })
-    setNewCardTitle('')
-    toggleOpenNewCardForm()
+      //used in common with the function onUpdateColumnSate
+      onUpdateColumnSate({ newColumnToUpdate: newColumn })
+      setNewCardTitle('')
+      toggleOpenNewCardForm()
+    })
   }
 
   return (

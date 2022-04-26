@@ -14,7 +14,7 @@ import './BoardContent.scss'
 import Column from 'components/Column/Column'
 import { mapOrder } from 'utilities/sorts'
 import { applyDrag } from 'utilities/dragDrop'
-import { fetchBoardDetails } from 'actions/ApiCall'
+import { fetchBoardDetails, createNewColumn } from 'actions/ApiCall'
 
 function BoardContent() {
   const [board, setBoard] = useState({})
@@ -98,28 +98,28 @@ function BoardContent() {
     }
 
     const newColumnToAdd = {
-      id: Math.random().toString(36).substring(2, 5), // 5 random characters, will remove when impalement API
       boardId: board._id,
-      title: newColumnTitle.trim(), // trim to remove leading and trailing spaces
-      cardOrder: [],
-      cards: []
+      title: newColumnTitle.trim() // trim to remove leading and trailing spaces
     }
 
-    let newColumns = [...columns]
-    newColumns.push(newColumnToAdd)
+    // Call API
+    createNewColumn(newColumnToAdd).then(createdColumn => {
+      let newColumns = [...columns]
+      newColumns.push(createdColumn)
 
-    let newBoard = { ...board }
-    newBoard.columnOrder = newColumns.map((column) => column._id)
-    newBoard.columns = newColumns
+      let newBoard = { ...board }
+      newBoard.columnOrder = newColumns.map((column) => column._id)
+      newBoard.columns = newColumns
 
-    setColumns(newColumns)
-    setBoard(newBoard)
+      setColumns(newColumns)
+      setBoard(newBoard)
 
-    setNewColumnTitle('')
-    toggleOpenNewColumnForm()
+      setNewColumnTitle('')
+      toggleOpenNewColumnForm()
+    })
   }
 
-  const onUpdateColumn = ({ newColumnToUpdate }) => {
+  const onUpdateColumnSate = ({ newColumnToUpdate }) => {
     const columnIdToUpdate = newColumnToUpdate._id
 
     let newColumns = [...columns]
@@ -160,7 +160,7 @@ function BoardContent() {
             <Column
               column={column}
               onCardDrop={onCardDrop}
-              onUpdateColumn={onUpdateColumn}
+              onUpdateColumnSate={onUpdateColumnSate}
             />
           </Draggable>
         ))}
