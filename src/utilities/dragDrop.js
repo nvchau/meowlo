@@ -1,9 +1,11 @@
+import { cloneDeep } from 'lodash'
+
 // handle Drag and Drop columns and cards
 export const applyDrag = (arr, dragResult) => {
   const { removedIndex, addedIndex, payload } = dragResult
   if (removedIndex === null && addedIndex === null) return arr
 
-  const result = [...arr]
+  const result = cloneDeep(arr)
   let itemToAdd = payload
 
   if (removedIndex !== null) {

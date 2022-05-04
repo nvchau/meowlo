@@ -7,14 +7,20 @@ import {
   Form,
   Button
 } from 'react-bootstrap'
-import { isEmpty } from 'lodash'
+import { isEmpty, cloneDeep } from 'lodash'
 
 import './BoardContent.scss'
 
 import Column from 'components/Column/Column'
 import { mapOrder } from 'utilities/sorts'
 import { applyDrag } from 'utilities/dragDrop'
-import { fetchBoardDetails, createNewColumn } from 'actions/ApiCall'
+import {
+  fetchBoardDetails,
+  createNewColumn,
+  updateBoard,
+  updateColumn,
+  updateCard
+} from 'actions/ApiCall'
 
 function BoardContent() {
   const [board, setBoard] = useState({})
@@ -62,32 +68,63 @@ function BoardContent() {
 
   const onColumnDrop = (dropResult) => {
     // colone columns
-    let newColumns = [...columns]
+    let newColumns = cloneDeep(columns)
     // update columns with applyDrag function of react-smooth-dnd library
     newColumns = applyDrag(newColumns, dropResult)
 
     // colone board
-    let newBoard = { ...board }
+    let newBoard = cloneDeep(board)
     // update columnOrder of board
     newBoard.columnOrder = newColumns.map((column) => column._id)
     // update columns of board
     newBoard.columns = newColumns
 
+    // setState before call API update board (update columnOrder) to avoid jerky lag when pulling the column
     setColumns(newColumns)
     setBoard(newBoard)
+
+    // call API update columnOrder in board detail
+    updateBoard(newBoard._id, newBoard).catch(() => {
+      // if error, set column and board to old value
+      setColumns(columns)
+      setBoard(board)
+
+      // Popup alert error here
+    })
   }
 
   const onCardDrop = ({ columnId, dropResult }) => {
     // which column has removedIndex and addedIndex other than null (ie interactive) will run logic
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
-      let newColumns = [...columns]
+      let newColumns = cloneDeep(columns)
 
       let currentColumn = newColumns.find((column) => column._id === columnId)
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
       currentColumn.cardOrder = currentColumn.cards.map((card) => card._id)
 
       setColumns(newColumns)
-      // console.log({newColumns})
+
+      if (dropResult.removedIndex !== null && dropResult.addedIndex !== null) {
+        /**
+         * Action: move card inside its column
+         * 1 - Call API update cardOrder in current column
+         */
+        updateColumn(currentColumn._id, currentColumn).catch(() => setColumns(columns))
+      } else {
+        /**
+         * Action: move card between two column
+         */
+        // 1 - Call API update cardOrder in current column
+        updateColumn(currentColumn._id, currentColumn).catch(() => setColumns(columns))
+
+        if (dropResult.addedIndex !== null) {
+          let currentCard = cloneDeep(dropResult.payload)
+          currentCard.columnId = currentColumn._id
+
+          // 2 - Call API update columnId in current card
+          updateCard(currentCard._id, currentCard)
+        }
+      }
     }
   }
 
@@ -104,10 +141,10 @@ function BoardContent() {
 
     // Call API
     createNewColumn(newColumnToAdd).then(createdColumn => {
-      let newColumns = [...columns]
+      let newColumns = cloneDeep(columns)
       newColumns.push(createdColumn)
 
-      let newBoard = { ...board }
+      let newBoard = cloneDeep(board)
       newBoard.columnOrder = newColumns.map((column) => column._id)
       newBoard.columns = newColumns
 
@@ -122,7 +159,7 @@ function BoardContent() {
   const onUpdateColumnSate = ({ newColumnToUpdate }) => {
     const columnIdToUpdate = newColumnToUpdate._id
 
-    let newColumns = [...columns]
+    let newColumns = cloneDeep(columns)
 
     const columnIndexToUpdate = newColumns.findIndex(item => item._id === columnIdToUpdate)
 
@@ -134,7 +171,7 @@ function BoardContent() {
       newColumns.splice(columnIndexToUpdate, 1, newColumnToUpdate)
     }
 
-    let newBoard = { ...board }
+    let newBoard = cloneDeep(board)
     newBoard.columnOrder = newColumns.map((column) => column._id)
     newBoard.columns = newColumns
 
