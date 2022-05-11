@@ -43,7 +43,7 @@ function AppBar() {
                 <img
                   src="https://scontent.fdad1-2.fna.fbcdn.net/v/t39.30808-6/273532713_3809905752566906_8965370667488582217_n.jpg?_nc_cat=105&ccb=1-6&_nc_sid=09cbfe&_nc_ohc=qlpiCqvmsNMAX8QvBcN&tn=3KwNw9SES2O4X2Tg&_nc_ht=scontent.fdad1-2.fna&oh=00_AT_p5j52VSfzmPJoWkaFg45UZz7YeVpBsA4TcMpG8OJrWQ&oe=62812D26"
                   alt="avatar-meowlo"
-                   title="meowlo"
+                  title="meowlo"
                 />
               </div>
             </div>
