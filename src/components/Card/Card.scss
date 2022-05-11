@@ -9,12 +9,39 @@ $card-border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   margin-bottom: $gap;
+  position: relative;
 
   img.card-cover {
     display: block;
     width: calc(100% + 2 * #{$gap});
+    max-height: 150px;
+    object-fit: cover;
     margin: -$gap 0 $gap (-$gap);
     border-top-left-radius: $card-border-radius;
     border-top-right-radius: $card-border-radius;
+  }
+
+  .edit-card {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    z-index: 999;
+    display: none;
+    transition: $hover-transition;
+    padding: 4px;
+    border-radius: 2px;
+    color: $app-main-text-color;
+    font-size: 16px;
+
+    &:hover {
+      // color: $input-border-color;
+      background-color: $column-bg-color;
+    }
+  }
+
+  &:hover {
+    .edit-card {
+      display: block;
+    }
   }
 }
