@@ -78,7 +78,7 @@ $column-height: calc(#{$board-content-height} - #{$gap * 5 + 5px});
           font-size:14px;
 
           &:not(:last-child) {
-            border-bottom: 1px solid darken($column-bg-color, 10);
+            border-bottom: 1px solid darken($common-element-bg, 40);
           }
         }
       }

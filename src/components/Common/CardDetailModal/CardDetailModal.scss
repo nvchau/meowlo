@@ -3,9 +3,53 @@
 $card-cover-border-radius: 4px;
 
 .card-detail-modal {
+  .modal-content {
+    // min-width: 800px;
+  }
+
+  .card-icon {
+    margin-right: $gap;
+    color: #42526e;
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .header {
+    font-size: 16px;
+  }
+
+  .option {
+    .option-item {
+      background-color: #091e420a;
+      border: none;
+      border-radius: 3px;
+      box-shadow: none;
+      box-sizing: border-box;
+      cursor: pointer;
+      display: block;
+      height: 32px;
+      margin-top: 8px;
+      max-width: 300px;
+      overflow: hidden;
+      padding: 6px 12px;
+      position: relative;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      transition-duration: 85ms;
+      transition-property: background-color,border-color,box-shadow;
+      transition-timing-function: ease;
+      -webkit-user-select: none;
+      user-select: none;
+      white-space: nowrap;
+      color: #172b4d;
+    }
+  }
+
   .card-detail-cover {
     background-color: $column-bg-color;
     border-radius: $card-cover-border-radius;
+    margin-bottom: $gap;
+    margin-left: 28px;
 
     img.card-cover {
       transition: .3s ease;
@@ -15,7 +59,7 @@ $card-cover-border-radius: 4px;
       object-fit: cover;
       border-radius: $card-cover-border-radius;
       cursor: zoom-in !important;
-      padding: 0 30%;
+      // padding: 0 30%;
     }
 
     .card-cover-overlay {
@@ -46,7 +90,7 @@ $card-cover-border-radius: 4px;
   }
 
   .card-detail-content {
-    margin: ($gap * 2) 0 $gap 0;
+    margin-left: 28px;
   }
 
   .close-btn {

@@ -10,4 +10,8 @@ export const saveContentAfterPressEnter = (e) => {
     e.preventDefault()
     e.target.blur()
   }
+
+  // if (e.keyCode === 27) {
+  //   e.target.blur()
+  // }
 }
