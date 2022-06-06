@@ -37,5 +37,4 @@ $ yarn | npm start
 ## Some technical
 * Clone deep a array (object) with `lodash`: `_.cloneDeep` function (Another way to deep clone an object is to convert the value to a string then assign it to a new variable and parse it back to the object)
 ## Some images
-![image](https://user-images.githubusercontent.com/46041824/170832021-6afc38e6-e41e-4275-9618-eb09de20a1ee.png)
 ![image](https://user-images.githubusercontent.com/46041824/170832039-9ef2033a-68dc-439e-96e5-d2f2aceab9a1.png)
